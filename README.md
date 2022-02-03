@@ -1,4 +1,4 @@
-# Unit-6
+# Unit-5
  Public API Requests
 
 JavaScript Fullstack techdegree project for Team Treehouse
