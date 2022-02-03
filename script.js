@@ -1,11 +1,15 @@
 //this project is going to be challenging and fun!
 
+
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
 const cards = document.querySelectorAll('.card');
 const randomUsers = "https://randomuser.me/api/?nat=us&results=12";
+
 let userData = [];
-let cardArray = [];
+let cardData = [];
+let cardIndex = 0;
+
 
 
 
@@ -53,11 +57,9 @@ function getCards(users){
                 </div>
                 </div>
                 `;
-        gallery.appendChild(div)
+        gallery.appendChild(div);
     })
 }
-    
-
 //     Generate modal function
 
 function getModals(user) {
@@ -68,39 +70,48 @@ function getModals(user) {
         let year = dob.slice(0, 4);
         let month = dob.slice(5, 7);
         let day = dob.slice(8, 10);
-        console.log(year);
-        console.log(month);
-        console.log(day);
-
-        
-        
-
         
         modalHTML = `
             <div class="modal-container">
             <div class="modal">
                 <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
-                <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
-                <h3 id="name" class="modal-name cap">name</h3>
+                <img class="modal-img" src="${userInfo.picture.thumbnail}" alt="profile picture">
+                <h3 id="name" class="modal-name cap">${userInfo.name.first} ${userInfo.name.last}</h3>
                 <p class="modal-text">${userInfo.email}</p>
                 <p class="modal-text cap">${userInfo.city}</p>
                 <hr>
                 <p class="modal-text">${userInfo.phone}</p>
-                <p class="modal-text">123 Portland Ave., Portland,  OR 97204</p>
-                 <p class="modal-text">Birthday: 10/21/2015</p>
+                <p class="modal-text">${userInfo.location.street.number} ${userInfo.location.street.name}</p>
+                <p class="modal-text">${userInfo.location.city}, ${userInfo.location.state}</p>
+                 <p class="modal-text">Birthday: ${month}/${day}/${year}</p>
                 </div>
              </div>
              `;
+        cardData.push(modalHTML);
     })
 
 }
 
 //     Adds Event Listeners for each card (modal feature)
-    
+ 
+window.addEventListener('click', e =>{
+    const cards = document.querySelectorAll('.card');  
+    if(e.target.closest('.card')) {
+        for(let i = 0; i < cards.length; i++) {
+            if (e.composedPath().includes(cards[i]))
+            cardIndex = i;
+        }
+    gallery.insertAdjacentHTML('afterbegin', cardData[cardIndex])  
+        
+    }
+})
 
 
 
-
-
-
+window.addEventListener('click', e => {
+    const modalContainer = document.querySelector('.modal-container');
+    if (e.target === modalContainer)
+        document.querySelector('.modal-container').style.display = 'none';
+    console.log(e.target);
+})
