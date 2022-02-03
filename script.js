@@ -95,7 +95,7 @@ function getModals(user) {
 
 //     Adds Event Listeners for each card (modal feature)
  
-window.addEventListener('click', e =>{
+document.addEventListener('click', e =>{
     const cards = document.querySelectorAll('.card');  
     if(e.target.closest('.card')) {
         for(let i = 0; i < cards.length; i++) {
@@ -109,9 +109,11 @@ window.addEventListener('click', e =>{
 
 
 
-window.addEventListener('click', e => {
-    const modalContainer = document.querySelector('.modal-container');
-    if (e.target === modalContainer)
-        document.querySelector('.modal-container').style.display = 'none';
-    console.log(e.target);
+document.addEventListener('click', e => {
+    const closeBTN = document.querySelector('.modal-close-btn');
+    const modalConainer = document.querySelector('.modal-container');
+    if(e.target === closeBTN | e.target === modalConainer | e.target === closeBTN.firstChild) {
+        modalConainer.style.display = 'none';
+    }
+
 })
