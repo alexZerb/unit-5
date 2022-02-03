@@ -10,19 +10,31 @@ let userData = [];
 let cardData = [];
 let cardIndex = 0;
 //
-//         FETCH FUNCTION
+//         FETCH FUNCTION 
 //
 function fetchUsers(url){
     return fetch(url)
+        .then(checkresponse)
         .then(res => res.json())
         .then(data => {
             const users = data;
             userData.push(users);
             getCards(users);
             getModals(users);
-         })         
+         })
+         .catch(err => console.log('Something went wrong: ', err));         
 }
     fetchUsers(randomUsers);
+
+// check response for error
+function checkresponse(response) {
+    if(response.ok) {
+        return Promise.resolve(response);
+    } else {
+        return Promise.reject(new Error(response.statusText));
+    }
+}
+
 //
 //     Create & append div card for each random user
 //
@@ -68,8 +80,7 @@ function getModals(users) {
                 <p class="modal-text cap">${userInfo.location.city}</p>
                 <hr>
                 <p class="modal-text">${newNumber}</p>
-                <p class="modal-text">${userInfo.location.street.number} ${userInfo.location.street.name}</p>
-                <p class="modal-text">${userInfo.location.city}, ${userInfo.location.state}</p>
+                <p class="modal-text">${userInfo.location.street.number} ${userInfo.location.street.name}, ${userInfo.location.city}, ${userInfo.location.state}</p>
                  <p class="modal-text">Birthday: ${month}/${day}/${year}</p>
             </div>
             </div>
@@ -82,11 +93,13 @@ function getModals(users) {
 // 
 document.addEventListener('click', e =>{
     const cards = document.querySelectorAll('.card');  
+    const prevBTN = document.querySelector('#modal-prev');
+    const nextBTN = document.querySelector('#modal-next');
     if(e.target.closest('.card')) {
         for(let i = 0; i < cards.length; i++) {
             if (e.composedPath().includes(cards[i]))
             cardIndex = i;
-        }
+        } 
     gallery.insertAdjacentHTML('afterbegin', cardData[cardIndex])      
     }
 })
@@ -100,3 +113,4 @@ document.addEventListener('click', e => {
         modalConainer.style.display = 'none';
     }
 })
+
